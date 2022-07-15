@@ -33,7 +33,7 @@ After installing Rustup on a UNIX-based system, run the following commange to co
 source $HOME/.cargo/env
 ```
 
-Also, you use a Windows-based machine, you should download a [binary for Rustup](https://win.rustup.rs/x86_64), run it and follow instructions.
+Also, you use a Windows-based machine, it is recommended using Windows Subsystem for Linux (WSL 2). More information on how to setup WSL can be found [here](https://docs.microsoft.com/en-us/windows/wsl/install). After that, you can follow the instruction above to proceed with installing `rust-toolkit`.
 
 When Rustup is installed, we need to add `wasm` target to the toolchain which is a target for Rust that produces WebAssembly as output. To do that, run following command in your terminal:
 ```bash
@@ -49,30 +49,6 @@ Now we will set up our project. We will use `cargo` to setup a repository for a 
 cargo new near-marketplace-contract --lib
 cd near-marketplace-contract
 ```
-After running this command the structure of the project should look like this:
-```bash
-near-marketplace-contract
-├── Cargo.lock
-├── Cargo.toml # Hold a list of dependencies to be used for development. Similar to package.json
-├── src
-│   └── lib.rs # Entry file for the contract
-└── target
-    ├── CACHEDIR.TAG
-    └── rls
-        ├── CACHEDIR.TAG
-        └── debug
-            ├── build
-            ├── deps
-                # ...omitted generated files listed here
-            rmeta
-                # ...omitted generated listed here
-            rmeta
-                # ...omitted generated listed here
-            ├── examples
-            └── incremental
-                # ...omitted generated listed here
-```
-`lib.rs` works as an entry file for the contract and this is a conventional filename for Rust libraries which compile to WebAssembly.
 
 Next, open `Cargo.toml` in a text editor and replace its content with the following:
 ```toml
@@ -103,6 +79,16 @@ After that, run the next command to update dependencies in the `Cargo.lock` file
 ```bash
 cargo update
 ```
+
+After running this command the structure of the project should look like this:
+```bash
+near-marketplace-contract
+├── Cargo.lock
+├── Cargo.toml # Hold a list of dependencies to be used for development. Similar to package.json
+├── src
+    └── lib.rs # Entry file for the contract
+```
+`lib.rs` works as an entry file for the contract and this is a conventional filename for Rust libraries which compile to WebAssembly.
 
 ## 2. Contract Storage
 
