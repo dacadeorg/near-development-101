@@ -492,10 +492,27 @@ We initilize `sold` to 0 as it is just a counter of sold products.
 
 And the last one is `owner` which is set to the current signer account id automatically from `env`.
 
-Also, we add a method called `increment_sold_amount` which we are going to use later to increment the `sold` value after a product has been sold.
+Also, we add a method to the `Product` struct that is called `increment_sold_amount` and which we are going to use later to increment the `sold` value after a product has been sold.
 ```rust
-pub fn increment_sold_amount(&mut self) {
-    self.sold = self.sold + 1;
+#[near_bindgen]
+impl Product {
+
+    pub fn from_payload(payload: Payload) -> Self {
+        Self {
+            id: payload.id,
+            description: payload.description,
+            name: payload.name,
+            location: payload.location,
+            price: payload.price,
+            sold: 0,
+            image: payload.image,
+            owner: env::signer_account_id()
+        }
+    }
+
+    pub fn increment_sold_amount(&mut self) {
+        self.sold = self.sold + 1;
+    }
 }
 ```
 
