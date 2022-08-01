@@ -400,7 +400,7 @@ Now we create our final component, where we will create the UI for the marketpla
 ```
 ├── components
 │   ├── marketplace
-│   │   ├── AddProducts.js
+│   │   ├── AddProduct.js
 │   │   ├── Product.js
 │   │   └── Products.js
 │   ├── utils

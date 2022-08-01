@@ -27,10 +27,10 @@ We will also use the package manager yarn, so make sure to have that installed.
 
 You can install the latest versions of CLI tools globally by running the following commands:
 
-```bash=
-yarn add global near-cli
-yarn add global assemblyscript
-yarn add global asbuild
+```bash
+yarn global add near-cli
+yarn global add assemblyscript
+yarn global add asbuild
 ```
 
 We recommend using a code editor that supports code completion and syntax highlighting for TypeScript to help you write AssemblyScript code, like Visual Studio Code or Atom. We will use Visual Studio Code for this learning module.
@@ -45,7 +45,7 @@ In our root directory, we need to create a file called `asconfig.json`. This con
 
 To compile with the `near-sdk-as`, we will need to add the following to the `asconfig.json` file:
 
-```javascript=
+```javascript
 {
     "extends": "near-sdk-as/asconfig.json"
 }
@@ -57,7 +57,7 @@ We create an `assembly` directory and the `assembly/tsconfig.json` file inside i
 
 The `tsconfig.json` file needs to be in the root directory of the TypeScript project.
 
-```javascript=
+```javascript
 {
   "extends": "../node_modules/assemblyscript/std/assembly.json",
   "include": [
@@ -71,7 +71,7 @@ The `tsconfig.json` file needs to be in the root directory of the TypeScript pro
 We create the `assembly/as_types.d.ts` file in our `assembly` directory. This file is used to define types that are used in our AssemblyScript code.
 In this case, we import the types from the `near-sdk-as`.
 
-```javascript=
+```javascript
 /// <reference types="near-sdk-as/assembly/as_types" />
 ```
 
@@ -79,7 +79,7 @@ In this case, we import the types from the `near-sdk-as`.
 
 Run the following command to initialize the project in the project root directory:
 
-```bash=
+```bash
 yarn init
 ```
 
@@ -87,8 +87,14 @@ It will create a package.json file where the dependencies are listed.
 
 Run the following command to add the `near-sdk-as` to the project:
 
-```bash=
+```bash
 yarn add -D near-sdk-as
+```
+
+Mac M1 users might experince the `Error: Unsupported platform: Darwin arm64` error when attempt to install.
+As a workaround, run the previous command with the `--ignore-scripts` option:
+```
+yarn add -D --ignore-scripts near-sdk-as
 ```
 
 In the last step of the initialization process, we will need to create an entry file for the smart contract. Create a file called `index.ts` in the `assembly` directory.
@@ -136,13 +142,13 @@ We will write this contract in our `assembly/index.ts` file.
 
 Let's start by importing the `PersistentUnorderedMap` class from the `near-sdk-as` at the top of the file:
 
-```javascript=
+```javascript
 import { PersistentUnorderedMap } from "near-sdk-as";
 ```
 
 Next, we create a `PersistentUnorderedMap` instance to store our products:
 
-```javascript=
+```javascript
 export const products = new PersistentUnorderedMap<string, string>("PRODUCTS");
 ```
 
@@ -154,7 +160,7 @@ The string `PRODUCTS` in the `PersistentUnorderedMap`'s constructor is the uniqu
 
 Lets create a function to add a new product to the `products` map:
 
-```javascript=
+```javascript
 export function setProduct(id: string, productName: string): void {
     products.set(id, productName);
 }
@@ -172,7 +178,7 @@ To create a new entry to our products mapping we just need to call the `set` fun
 
 To finish our first smart contract, we need to create a function to retrieve a product from the `products` map.
 
-```javascript=
+```javascript
 export function getProduct(id: string): string | null {
     return products.get(id);
 }
@@ -186,7 +192,7 @@ In the function body we call the `get` function on the `products` mapping, pass 
 
 The final code for this section looks like this:
 
-```javascript=
+```javascript
 import { PersistentUnorderedMap } from "near-sdk-as";
 
 export const products = new PersistentUnorderedMap<string, string>("PRODUCTS");
@@ -232,7 +238,7 @@ Next we will create a subaccount using the `near-cli`.
 
 To log into your new account, open a terminal and run the following `near-cli` command:
 
-```bash=
+```bash
 near login
 ```
 
@@ -247,7 +253,7 @@ Here is a GIF showing the steps above:
 
 To create a subaccount for your account, run the following command:
 
-```bash=
+```bash
 near create-account ${SUBACCOUNT_ID}.${ACCOUNT_ID} --masterAccount ${ACCOUNT_ID} --initialBalance ${INITIAL_BALANCE}
 ```
 
@@ -257,7 +263,7 @@ near create-account ${SUBACCOUNT_ID}.${ACCOUNT_ID} --masterAccount ${ACCOUNT_ID}
 
 As stated earlier we want to use the subaccount to deploy our smart contract to. So in our case an example call to create a subaccount could look like this:
 
-```bash=
+```bash
 near create-account mycontract.myaccount.testnet --masterAccount myaccount.testnet --initialBalance 5
 ```
 
@@ -269,13 +275,13 @@ In this section, we will compile our simple smart contract and deploy it to the 
 
 Before we can deploy our smart contract to the NEAR testnet, we need to compile it to wasm code. To compile our contract we need to run the following command in the project root:
 
-```bash=
+```bash
 yarn asb
 ```
 
 The compiled wasm code will be store in a file called `${CONTRACT_NAME}.wasm` in the following directory:
 
-```bash=
+```bash
 ${PROJECT_ROOT}/build/release/${CONTRACT_NAME}.wasm
 ```
 
@@ -285,7 +291,7 @@ ${PROJECT_ROOT}/build/release/${CONTRACT_NAME}.wasm
 
 To deploy our smart contract to the NEAR testnet, we need to run the following command:
 
-```bash=
+```bash
 near deploy --accountId=${ACCOUNT_ID} --wasmFile=${PATH_TO_WASM}
 ```
 
@@ -294,7 +300,7 @@ near deploy --accountId=${ACCOUNT_ID} --wasmFile=${PATH_TO_WASM}
 
 In our case the deploy command could look like this:
 
-```bash=
+```bash
 near deploy --accountId=mycontract.myaccount.testnet --wasmFile=build/release/near-marketplace-contract.wasm
 ```
 
@@ -312,7 +318,7 @@ First, we are going to invoke a `change` function.
 
 The `change` contract call in the `near-cli` looks like this:
 
-```bash=
+```bash
 near call ${CONTRACT_ACCOUNT_ID} ${METHOD_NAME} ${PAYLOAD} --accountId=${ACCOUNT_ID}
 ```
 
@@ -323,14 +329,14 @@ near call ${CONTRACT_ACCOUNT_ID} ${METHOD_NAME} ${PAYLOAD} --accountId=${ACCOUNT
 
 If want to add a new product to the contract we just deployed, the call could look like this:
 
-```bash=
+```bash
 near call mycontract.myaccount.testnet setProduct '{"id": "0", "productName": "tea"}' --accountId=myaccount.testnet
 ```
 
 If you use PowerShell or CMD on Windows, you might need to escape double quotes in the payload, which could look like this:
 
-```bash=
-near call mycontract.myaccount.testnet writeProduct "{\"id\": \"0\", \"productName\": \"tea\"}" --accountId=myaccount.testnet
+```bash
+near call mycontract.myaccount.testnet setProduct "{\"id\": \"0\", \"productName\": \"tea\"}" --accountId=myaccount.testnet
 ```
 
 Keep this in mind for the following sections when we have double quotes in the payload.
@@ -352,7 +358,7 @@ Now that we have added a product to the contract, we can call the `view` functio
 
 The `view` contract call in the `near-cli` looks like this:
 
-```bash=
+```bash
 near view ${CONTRACT_ACCOUNT_ID} ${METHOD_NAME} ${PAYLOAD}
 ```
 
@@ -360,7 +366,7 @@ Since we don't need to pay any gas we can omit the account id at the end.
 
 If we want to retrieve the product we just added, the call could look like this:
 
-```bash=
+```bash
 near view mycontract.myaccount.testnet getProduct '{"id": "0"}'
 ```
 
@@ -379,13 +385,13 @@ In this section, we are going to write a second iteration of our contract that c
 
 ### 7.1 Create Product Model
 
-We are going to use a model called a `Product` to represent our products, because we want to be able to store more than just the name of the product. A model is a custom data container that defines a new type and consists of an AssamblyScript class.
+We are going to use a model called a `Product` to represent our products, because we want to be able to store more than just the name of the product. A model is a custom data container that defines a new type and consists of an AssemblyScript class.
 
 In our assembly directory we are going to create a new file called `assembly/model.ts`.
 
 The content of the file should look like this:
 
-```javascript=
+```javascript
 import { PersistentUnorderedMap, u128, context } from "near-sdk-as";
 
 @nearBindgen
@@ -435,7 +441,7 @@ As explained earlier, we will use a more readable version of a key for `LISTED_P
 
 We need to update our `assembly/index.ts` file to include the new model and map:
 
-```javascript=
+```javascript
 import { Product, listedProducts } from './model';
 
 export function setProduct(product: Product): void {
@@ -469,25 +475,25 @@ NEAR allows us to update our contract code on the blockchain. We can do this by 
 
 We need to compile our new contract first:
 
-```bash=
+```bash
 yarn asb
 ```
 
 Then we can redeploy the contract to the same account id as before:
 
-```bash=
+```bash
 near deploy --accountId=mycontract.myaccount.testnet --wasmFile=build/release/${WASM_FILE_NAME}
 ```
 
 Let's add a new product to the contract by calling the `setProduct` function. Since we are using the `Product` class, we need to pass in a payload that is a `Product` object, which could look like this:
 
-```bash=
+```bash
 near call mycontract.myaccount.testnet setProduct '{"product": {"id": "0", "name": "BBQ", "description": "Grilled chicken and beef served with vegetables and chips.", "location": "Berlin, Germany", "price": "1000000000000000000000000", "image": "https://i.imgur.com/yPreV19.png"}}' --accountId=myaccount.testnet
 ```
 
 After a successful `setProduct` call, we can call the `getProduct` function to retrieve the product we just added:
 
-```bash=
+```bash
 near view mycontract.myaccount.testnet getProduct '{"id": "0"}'
 ```
 
@@ -517,7 +523,7 @@ The `near-sdk-as` library provides a `ContractPromiseBatch` class which allows u
 
 The code for a token transfer looks like this:
 
-```javascript=
+```javascript
 ContractPromiseBatch.create(${RECEIVING_ACCOUNT}).transfer(${DEPOSIT});
 ```
 
@@ -527,14 +533,14 @@ Let's write our `buyProduct` function in our `index.ts` file.
 
 First, we import the `ContractPromiseBatch` and `context` from the `near-sdk-as` library at the top of the file:
 
-```javascript=
+```javascript
 import { Product, listedProducts } from './model';
 import { ContractPromiseBatch, context } from 'near-sdk-as';
 ```
 
 Now we can write our `buyProduct` function at the bottom of the file:
 
-```javascript=
+```javascript
 export function buyProduct(productId: string): void {
     const product = getProduct(productId);
     if (product == null) {
@@ -559,7 +565,7 @@ Finally, we increment the `sold` field of the product by calling the `incrementS
 
 This is it! The final contract should look like this:
 
-```javascript=
+```javascript
 import { Product, listedProducts } from './model';
 import { ContractPromiseBatch, context } from 'near-sdk-as';
 
@@ -596,25 +602,25 @@ export function buyProduct(productId: string): void {
 
 Now we need to compile our contract for the last time:
 
-```bash=
+```bash
 yarn asb
 ```
 
 Then we can redeploy the contract to the same account id as before:
 
-```bash=
+```bash
 near deploy --accountId=mycontract.myaccount.testnet --wasmFile=build/release/${WASM_FILE_NAME}
 ```
 
 Let's test our contract by calling the `buyProduct` function. To do that, we will create a new sub-account that will act as the buyer and transfer some tokens to it:
 
-```bash=
+```bash
 near create-account buyeraccount.myaccount.testnet --masterAccount myaccount.testnet --initialBalance 6
 ```
 
 Now we are ready to buy a product with the account. Here is how the code for buying a product looks like:
 
-```bash=
+```bash
 near call mycontract.myaccount.testnet buyProduct '{"productId": "0"}' --depositYocto=1000000000000000000000000 --accountId=buyeraccount.myaccount.testnet
 ```
 
@@ -635,7 +641,7 @@ Let's see if the transaction went through correctly. Copy the link to the block 
 
 Next, we will check if the product was bought correctly. We will use the `getProduct` function to retrieve the product and check if the `sold` field is equal to 1.
 
-```bash=
+```bash
 near view mycontract.myaccount.testnet getProduct '{"id": "0"}'
 ```
 
