@@ -1,33 +1,33 @@
-In this learning module, we will follow a tutorial to build the frontend for a marketplace contract.
-This tutorial assumes that you have already completed the [Connect a React Dapp to NEAR](/near101_chapter_2.md) learning module and continue in the same project.
+U ovom modulu učenja slijedit ćemo vodič za izgradnju frontenda za pametni ugovor. Ovaj vodič pretpostavlja da ste već dovršili [Spojite React Dapp s NEAR-om](/near101_chapter_2.md) modul učenja i nastavljate u istom projektu.
 
-### Prerequisites
+### Preduvjeti
 
-- [Node JS](https://nodejs.org/en/download/) - Please make sure you have Node.js v16 or higher installed.
-- You should have a basic understanding of [React](https://reactjs.org/): know how to use JSX, props, state, lifecycle methods, and hooks.
-- You should have followed the [Connect a React Dapp to NEAR](/near101_chapter_2.md) learning module and have `react`, `react-scripts` v.2.1.4, `near-api-js` and `uuid` installed.
+- [Node JS](https://nodejs.org/en/download/) - Molimo provjerite imate li instaliran Node.js v16 ili noviju verziju.
+- Trebali biste imati osnovno razumijevanje [React-a](https://reactjs.org/): znati kako koristiti JSX, props, stanja, lifecycle metode, i hooks.
+- Trebali ste slijediti modul učenja [Spojite React Dapp sa NEAR-om](/near101_chapter_2.md) i imati instalirano `react`, `react-scripts` v.2.1.4, `near-api-js` i `uuid`.
 
 ### Tech Stack
 
-We will use the following tech stack:
+Koristiti ćemo sljedeće tehnologije:
 
-- [React](https://reactjs.org/) - A JavaScript library for building user interfaces.
-- [Bootstrap](https://getbootstrap.com/) - A CSS framework.
-- [near-api-js](https://docs.near.org/docs/api/javascript-library) - A JavaScript/Typescript library for interacting with NEAR's blockchain.
+- [React](https://reactjs.org/) - JavaScript biblioteka za izgradnju korisničkih sučelja.
+- [Bootstrap](https://getbootstrap.com/) - CSS okvir (framework).
+- [near-api-js](https://docs.near.org/docs/api/javascript-library) - JavaScript/Typescript biblioteka za interakciju s NEAR-ovim blockchainom.
 
-## 1. Project Setup
+## 1. Postavljanje projekta
 
-Since we already have the important dependencies installed, we now only need to add our dependencies for the frontend and styling:
+Budući da već imamo važne dependencies instalirane, sada samo trebamo dodati naše dependencies za frontend i stil:
 
 ```bash
 npm install react-bootstrap bootstrap bootstrap-icons react-toastify
 ```
 
-We will use `react-bootstrap` to handle the `Bootstrap` styling of our react components. We will also use `react-toastify` to display notifications to the user, so we don't have to handle that ourselves.
+Koristit ćemo `react-bootstrap` za rukovanje `Bootstrap` stilom naših react komponenti. Također ćemo koristiti `react-toastify` za prikaz obavijesti korisniku, tako da to ne moramo sami rješavati.
+
 
 ### 1.1 index.js
 
-Let's open the `src/index.js` file and start adding our bootstrap component and styles:
+Otvorimo `src/index.js` datoteku i počnimo dodavati naše bootstrap komponente i stilove:
 
 ```js
 import React from "react";
@@ -54,11 +54,12 @@ window.nearInitPromise = initializeContract()
 reportWebVitals();
 ```
 
-We initialize the contract by calling the `initializeContract` function from the `utils/near.js` file, that we created in the [Connect a React Dapp to NEAR](/near101_chapter_2.md) learning module.
+Započinjemo ugovor pozivanjem funkcije `initializeContract` iz datoteke `utils/near.js` koju smo kreirali u [Spojite React Dapp sa NEAR-om](/near101_chapter_2.md) modulu učenja.
+
 
 ### 1.2 utils
 
-The `src/utils/` directory should look like this if you followed the [Connect a React Dapp to NEAR](/near101_chapter_2.md) learning module:
+`src/utils/` direktorij bi trebao izgledati ovako ako ste slijedili [Spojite React Dapp sa NEAR-om](/near101_chapter_2.md) modul učenja:
 
 ```
 ├── utils
@@ -69,7 +70,7 @@ The `src/utils/` directory should look like this if you followed the [Connect a 
 
 ### 1.3 App.js
 
-We will set up the `App.js` file to render our UI. Let's open the `src/App.js` file and start with the imports:
+Postavit ćemo datoteku `App.js` za renderiranje našeg korisničkog sučelja. Otvorimo datoteku `src/App.js` i počnimo s uvozom:
 
 ```js
 import React, { useEffect, useCallback, useState } from "react";
@@ -84,11 +85,11 @@ import "./App.css";
 //..
 ```
 
-We import the `login`, `logout` and `accountBalance` functions from the `utils/near.js` file. We also import the `Wallet` and `Cover` components and the `coverImg` image file. All of which have not been created yet.
+Uvozimo funkcije prijavi se (`login`), odjavi se (`logout`) i stanje računa (`accountBalance`) iz datoteke `utils/near.js`. Također uvozimo komponente `Wallet``Cover`te datoteku sa slikama `coverImg`. Sve to još nije stvoreno.
 
-For now, the `Notification` and `Products` components will remain uncommented as we will implement them later.
+Za sada će komponente (‘Notification’ i ‘Products’ ostati bez komentara jer ćemo ih implementirati kasnije.
 
-Let's create our `App` component now:
+Kreirajmo sada našu komponentu Aplikacija (`App`):
 
 ```js
 //..
@@ -107,9 +108,9 @@ const App = function AppWrapper() {
 //..
 ```
 
-We get the `account` when connected to the wallet. If we are connected, we get the `accountId` and set the `balance` state. We call the `accountBalance` function from the `utils/near.js` file to get the balance.
+Dobivamo `account` kada smo spojeni na novčanik. Ako smo spojeni, dobivamo `accountId` i postavljamo stanje (`balance`). Pozivamo `accountBalance`funkciju iz `utils/near.js` datoteke da bismo dobili saldo.
 
-Let's return the JSX for our `App` component:
+Vratimo JSX za našu komponentu `App`:
 
 ```js
 //..
@@ -140,20 +141,21 @@ Let's return the JSX for our `App` component:
 export default App;
 ```
 
-If the user is connected to the wallet, we display our dapp. If they aren't, we render the `Cover` component.
+Ako je korisnik povezan s novčanikom, prikazujemo naš dapp (decentraliziranu aplikaciju). Ako nisu, renderiramo komponentu `Cover`.
 
-We pass a `name` for our dapp and a `coverImg` as props to the `Cover` component. We also pass a `login` function to log in to the wallet.
+Prosljeđujemo`name`za naš dapp i `coverImg` kao props komponenti `Cover`. Također prosljeđujemo funkciju `login` za prijavu u novčanik.
 
-The dapp consists of the `Wallet` component, which displays the user's account address and balance. We also show the `Products` component, which we will implement later.
-The `Wallet` needs the account address, the user's balance, a symbol for the currency we display, and a `destroy` function to log out of the wallet as props.
+Dapp se sastoji od komponente `Wallet`, koja prikazuje adresu i saldo korisničkog računa. Također prikazujemo komponentu `Products` koju ćemo kasnije implementirati.
+`Wallet` treba adresu računa, saldo korisnika, simbol za valutu koju prikazujemo i funkciju `destroy` za odjavu iz novčanika kao prop.
 
-Now let's create the components we already used.
+Sada kreirajmo komponente koje smo već koristili.
 
-## 2. Components
+## 2. Komponente
 
-In this section of the tutorial, we will create the custom components we will use in our dapp.
+U ovom dijelu vodiča izradit ćemo prilagođene komponente koje ćemo koristiti u našem dapp-u.
 
-The components directory will look like this:
+Direktorij komponenti će izgledati ovako:
+
 
 ```
 ├── components
@@ -162,11 +164,11 @@ The components directory will look like this:
 │   └── Wallet.js
 ```
 
-We will start with the `Cover` component.
+Počet ćemo s komponentom `Cover`.
 
 ### 2.1 Cover.js
 
-Create a `components` folder in the `src` directory and create a `src/components/utils/Cover.js` file with the following code:
+Napravite mapu komponente (`components`) u direktoriju `src` i kreirajte datoteku `src/components/utils/Cover.js` sa sljedećim kodom:
 
 ```js
 import React from "react";
@@ -215,18 +217,19 @@ Cover.defaultProps = {
 export default Cover;
 ```
 
-This component is pretty simple. If it receives the `name`, `login` and `coverImg` as props, we render the `coverImg` and the `name` of the dapp. We also display a `Connect Wallet` button that calls the `login` function when clicked.
+Ova komponenta je prilično jednostavna. Ako primi `name`, `login` i `coverImg` kao propertije, renderiramo `coverImg` i `name`) dapp-a. Također prikazujemo gumb `Connect Wallet` koji poziva funkciju `login` kada se klikne.
 
-#### 2.1.1 Cover Image
+#### 2.1.1 Naslovna slika
 
-Since we are using a cover image, we need to import the `coverImg` image file.
-For this tutorial, we chose a `sandwich.jpg` image that you can find [here](https://raw.githubusercontent.com/dacadeorg/near-marketplace-dapp/master/src/assets/img/sandwich.jpg). We create two new nested folders in the assets directory and store the image `assets/img/sandwich.jpg`.
+Budući da koristimo naslovnu sliku, moramo uvesti datoteku sa slikama `coverImg`.
+Za ovaj vodič odabrali smo sliku `sandwich.jpg` koju možete pronaći [ovdje](https://raw.githubusercontent.com/dacadeorg/near-marketplace-dapp/master/src/assets/img/sandwich.jpg ). Kreiramo dvije nove spremljene mape u direktoriju ‘assets’ i spremamo sliku `assets/img/sandwich.jpg`.
 
-Now let's continue with the `Wallet` component.
+
+Sada nastavimo sa komponentom `Wallet`.
 
 ### 2.1 Wallet.js
 
-The wallet component will display the user's account address, balance, and logout button. Create a `src/components/Wallet.js` file with the following code:
+Komponenta ‘Wallet’ će prikazati adresu korisničkog računa, saldo i gumb za odjavu. Napravite datoteku `src/components/Wallet.js` sa sljedećim kodom:
 
 ```js
 import React from "react";
@@ -286,22 +289,22 @@ const Wallet = ({ address, amount, symbol, destroy }) => {
 export default Wallet;
 ```
 
-We receive the `address`, the user balance (`amount`), and the `symbol` of the currency we display as props. We also receive a `destroy` function to log out of the wallet. As described earlier, these are passed from the `App` component.
+Primamo `address`, `amount` i `symbol` valute koje prikazujemo kao propertije. Također primamo funkciju `destroy` za odjavu iz novčanika. Kao što je ranije opisano, oni se prosljeđuju iz komponente `App`.
 
-Now we should be ready to have run our dapp and see if we can log in, log out, and see our balance and address.
+Sada bismo trebali biti spremni pokrenuti naš dapp i vidjeti možemo li se prijaviti, odjaviti i vidjeti svoj saldo i adresu.
 
-Run the dapp:
+Pokrenite dapp:
 
 ```bash
 npm start
 ```
 
-The app should now look behave like this:
+Aplikacija bi se sada trebala ponašati ovako:
 ![](https://github.com/dacadeorg/near-development-101/raw/master/content/gifs/test_wallet_login.gif)
 
 ### 2.2 utils
 
-Let's next work on some utility components. The `utils` directory will look like this:
+Idemo sada raditi na nekim utility komponentama. Direktorij `utils` će izgledati ovako:
 
 ```
 ├── components
@@ -311,11 +314,11 @@ Let's next work on some utility components. The `utils` directory will look like
 │   │   └── Notifications.js
 ```
 
-We already have the `Cover` component. Let's create the `Loader` component next.
+Već imamo naslovnu komponentu (`Cover`). Kreirajmo komponentu za učitavanje, ( `Loader`).
 
 #### 2.2.1 utils/Loader.js
 
-The `Loader` component will display a loading animation. Create a new `components/utils/Loader.js` file with the following code:
+Komponenta `Loader` će prikazati animaciju učitavanja. Napravite novu datoteku `components/utils/Loader.js` sa sljedećim kodom:
 
 ```js
 import React from "react";
@@ -331,12 +334,13 @@ const Loader = () => (
 export default Loader;
 ```
 
-This component is pretty simple. It just displays the bootstrap `Spinner` component.
+Ova komponenta je prilično jednostavna. Samo prikazuje bootstrap komponentu `Spinner`.
 
 #### 2.2.2 utils/Notifications.js
 
-The `Notification` component will display notifications to the user.
-Create a new `components/utils/Notifications.js` file with the following code:
+Komponenta `Notification’ će prikazati obavijesti korisniku.
+Izradite novu datoteku `components/utils/Notifications.js` sa sljedećim kodom:
+
 
 ```js
 import React from "react";
@@ -389,33 +393,34 @@ NotificationError.defaultProps = DefaultProps;
 export { Notification, NotificationSuccess, NotificationError };
 ```
 
-This component uses the `react-toastify` library to display notifications.
-We distinguish between success and error notifications and otherwise display the `text` as a string.
-The `Notification` component is implemented in the `App` component.
+Ova komponenta koristi biblioteku `react-toastify` za prikaz obavijesti.
+Razlikujemo obavijesti o uspjehu i obavijesti o pogreškama, a inače prikazujemo "text" kao string.
+Komponenta `Notification` implementirana je u komponentu `App`.
 
-### 2.3 marketplace
+### 2.3 Tržnica
 
-Now we create our final component, where we will create the UI for the marketplace. The `components/marketplace` directory will look like this:
+Sada kreiramo našu završnu komponentu, gdje ćemo kreirati korisničko sučelje za tržište. Direktorij `components/marketplace` izgledat će ovako:
 
 ```
 ├── components
 │   ├── marketplace
-│   │   ├── AddProducts.js
+│   │   ├── AddProduct.js
 │   │   ├── Product.js
 │   │   └── Products.js
 │   ├── utils
 │   └── Wallet.js
 ```
 
-Let's start with the `Products` component.
+Počnimo s komponentom ‘Products’.
 
 #### 2.3.1 Products.js
 
-The `Products` component will display a list of products.
-It will be the main component of the marketplace that will contain the `AddProducts` and `Product` components.
-Create a new `marketplace` folder in the `components` directory and create a `src/components/marketplace/Products.js` file.
+Komponenta‘Products’ prikazat će popis proizvoda.
+To će biti glavna komponenta tržnice koja će sadržavati komponente `AddProducts` i `Product`.
 
-Let's start with the imports:
+Napravite novu mapu `marketplace` u direktoriju `components` i kreirajte datoteku `src/components/marketplace/Products.js`.
+
+Počnimo s importanjem:
 
 ```js
 import React, { useEffect, useState, useCallback } from "react";
@@ -433,11 +438,11 @@ import {
 //...
 ```
 
-We import the `AddProduct` and `Product` components, that we will create later.
-We also import the `Loader` and `NotificationSuccess` and `NotificationError` components from the `utils` directory.
-Finally, we import the `getProductList`, `buyProduct` and `createProduct` utility functions from the `utils/marketplace` directory.
+Importamo komponente `AddProducts i `Product` koje ćemo kreirati kasnije.
+Također importamo komponente `Loader`, `NotificationSuccess` i `NotificationError` iz direktorija `utils`.
+Konačno, importamo utility funkcije `getProductList`, `buyProduct` i `createProduct` iz direktorija `utils/marketplace`.
 
-Let's create our main `Products` component and a `getProducts` function, which we use to fetch the list of products:
+Kreirajmo našu glavnu komponentu `Products` i funkciju `getProducts` koju koristimo za dohvaćanje popisa proizvoda:
 
 ```js
 //...
@@ -458,10 +463,10 @@ const Products = () => {
 //...
 ```
 
-We set the `loading` state to `true` when we fetch the products and set the `products` state to the list of products. To fetch the products, we use the `getProductList` utility that we imported earlier.
-Once we have the products, we set the `loading` state to `false`.
+Stanje `loading` postavljamo na `true` kada dohvaćamo proizvode i postavljamo stanje `Products` na popis proizvoda. Za dohvaćanje proizvoda koristimo utility funkciju `getProductList` koji smo ranije uvezli.
+Nakon što imamo proizvode, postavljamo stanje `loading` na `false`.
 
-Next we create the `AddProduct` function:
+Zatim stvaramo funkciju `AddProduct`:
 
 ```js
 //...
@@ -482,9 +487,9 @@ const addProduct = async (data) => {
 //...
 ```
 
-We receive the product data as a parameter and use the `createProduct` utility function to create the product. We then fetch the products again and display a success message, or an error message if the product could not be created.
+Podatke o proizvodu primamo kao parametar i koristimo utility funkciju `createProduct` za izradu proizvoda. Zatim ponovno preuzimamo proizvode i prikazujemo poruku o uspjehu ili poruku o pogrešci ako se proizvod ne može kreirati.
 
-Finally, we create the `buyProduct` function:
+Konačno, kreiramo funkciju `buyProduct`:
 
 ```js
 //...
@@ -508,9 +513,9 @@ useEffect(() => {
 //...
 ```
 
-We need the `id` and `price` of the product, and the we can call the `buyProduct` utility function to buy the product. We then fetch the products again and display a success message, or an error message if the product could not be bought.
+Trebamo `id` i `price` proizvoda, i onda možemo pozvati utility funkciju `buyProduct` da bismo kupili proizvod. Zatim ponovno preuzimamo proizvode i prikazujemo poruku o uspjehu ili poruku o pogrešci ako se proizvod ne može kupiti.
 
-Now can return the `Products` component and write the JSX code:
+Sada možete vratiti komponentu `Products` i napisati JSX kod:
 
 ```js
 //...
@@ -543,17 +548,17 @@ Now can return the `Products` component and write the JSX code:
 export default Products;
 ```
 
-In the not yet created `AddProduct` component, we pass the `addProduct` function that we created earlier as a prop.
+U komponenti `AddProduct`, koja još nije stvorena, prosljeđujemo funkciju `addProduct` koju smo ranije kreirali kao prop.
 
-Then we map the list of `products` to the not yet created `Product` component, which is a component will display the individual product as a card. We pass the `_product`'s data as props to the `Product` component to render the product. We also pass the `buy` function as a prop.
+Zatim mapiramo listu ‘products’ u komponentu `Product` koja još nije kreirana, a ona će prikazati pojedinačni proizvod kao karticu. Podatke `_product` prosljeđujemo kao props komponenti `Product` za renderiranje proizvoda. Također prosljeđujemo funkciju `buy` kao prop.
 
-Finally, we export the `Products` component.
+Konačno, exportamo komponentu `Products`.
 
-Let's now create the `Product` component that we just discussed.
+Kreirajmo sada komponentu ‘Product’ o kojoj smo upravo govorili.
 
 #### 2.3.2 Product.js
 
-This file will contain the `Product` component, which will display the individual product as a card. In the `marketplace` directory, create a `src/components/marketplace/Product.js` file with the following code:
+Ova datoteka će sadržavati komponentu ‘Product’, koja će prikazati pojedinačni proizvod kao karticu. U direktoriju `marketplace` kreirajte datoteku `src/components/marketplace/Product.js` sa sljedećim kodom:
 
 ```js
 import React from "react";
@@ -610,17 +615,17 @@ Product.propTypes = {
 export default Product;
 ```
 
-This component is pretty simple. We get the product data: the `id`, `price`, `name`, `description`, how many times it has been `sold`, `location`, `image` and `owner` from the `product` prop.
+Ova komponenta je prilično jednostavna. Dobivamo podatke o proizvodu: `id`, ‘price’, ‘name’, `description`, koliko je puta prodan (‘sold’), `location`, `image` i `owner` iz propa ‘Product’ .
 
-In the `triggerBuy` function, we call the `buy` function that we passed as a prop with the `id` and `price` of the product as parameters.
+U funkciji `triggerBuy` pozivamo funkciju `buy` koju smo proslijedili kao prop s `id` i `price` kao parametrima.
 
-Then we display the product data as a bootstrap `Card` component and call the `triggerBuy` function when the `Buy` button is clicked.
+Zatim prikazujemo podatke o proizvodu kao bootstrap komponentu `Card` i pozivamo funkciju `triggerBuy` kada se klikne gumb za kupovinu (‘buy’).
 
-In the next section, we will create the `AddProduct` component.
+U sljedećem dijelu kreirat ćemo komponentu ‘AddProduct’.
 
 #### 2.3.3 AddProduct.js
 
-This file will contain the `AddProduct` component, which will display a form to add a new product. In the `marketplace` directory, create a `src/components/marketplace/AddProduct.js` file. We will start with the import statements and the `AddProduct` component:
+Ova datoteka će sadržavati komponentu ‘AddProduct’, koja će prikazati obrazac za dodavanje novog proizvoda. U ‘marketplace’ kreirajte datoteku ‘src/components/marketplace/AddProduct.js’. Počet ćemo s naredbama za uvoz i komponentom AddProduct’:
 
 ```js
 import React, { useState } from "react";
@@ -642,9 +647,9 @@ const AddProduct = ({ save }) => {
 //...
 ```
 
-We create state variables for the product data and a boolean state variable that we use to store the state of the modal with the form for the product data.
+Izrađujemo varijable stanja za podatke o proizvodu i booleovu varijablu stanja koju koristimo za pohranu stanja modala s obrascem za podatke o proizvodu.
 
-In the next step, we will create the button and form that will be displayed in the popup modal:
+U sljedećem koraku kreirat ćemo gumb i obrazac koji će se prikazati u skočnom modalnom prozoru:
 
 ```js
 //...
@@ -765,22 +770,24 @@ AddProduct.propTypes = {
 export default AddProduct;
 ```
 
-This file has a lot of code, but it's pretty straightforward. We create a modal that will be displayed when the user clicks on the `New Product` button.
-Inside the modal, we display a form with the product data fields.
+Ova datoteka ima puno koda, ali je prilično jednostavna. Izrađujemo modal koji će se prikazati kada korisnik klikne na gumb ‘New Product’.
+Unutar modala prikazujemo obrazac s poljima podataka o proizvodu.
 
-If the user clicks on the `Save product` button, we call the `save` function that we passed as a prop with the product data as parameters.
 
-We are done with the components, now we need to do a bit of cleanup in our `App.js` file and we are ready to go!
+Ako korisnik klikne na gumb ‘Save Product’, pozivamo funkciju ‘save’ koju smo proslijedili kao prop s podacima o proizvodu kao parametrima.
 
-## 3. Finishing the dapp
+Završili smo s komponentama, sada moramo malo očistiti našu datoteku `App.js` i spremni smo za rad!
 
-In this last section, we will put the final touches on the dapp.
 
-### 3.1. Update `App.js`
+## 3. Završavanje dapp-a
 
-Let's finish the dapp by adding our `Products` and `Notification` components to our `App.js` file.
+U ovom posljednjem odjeljku postavit ćemo završne detalje na dapp.
 
-Let's start by uncommenting the import of the `Products` and `Notification` components, so it looks like this:
+### 3.1. Ažurirajte `App.js`
+
+Završimo dapp dodavanjem komponenti ‘Products’ i Notification’ u našu datoteku `App.js`.
+
+Počnimo s poništavanjem komentara uvoza komponenti `Products` i `Notification`, tako da to izgleda ovako:
 
 ```js
 //...
@@ -791,7 +798,7 @@ import Cover from "./components/utils/Cover";
 //...
 ```
 
-Now we need to uncomment the `<Notification />` component in the JSX:
+Sada moramo poništiti komentare komponente (‘<Notification />’) u JSX-u:
 
 ```js
 //...
@@ -802,7 +809,7 @@ Now we need to uncomment the `<Notification />` component in the JSX:
 <!-- ... -->
 ```
 
-And we also need to uncomment the `<Products />` component:
+Također moramo poništiti komentare komponente (‘<Products />’):
 
 ```js
 //...
@@ -812,53 +819,53 @@ And we also need to uncomment the `<Products />` component:
 //...
 ```
 
-Do a final test. See if your products are displayed and if you can create a new product and buy it.
+Napravite završni test. Provjerite jesu li vaši proizvodi prikazani i možete li stvoriti novi proizvod i kupiti ga.
 
-The dapp should now behave like this:
+Dapp bi se sada trebao ponašati ovako:
 ![](https://github.com/dacadeorg/near-development-101/raw/master/content/gifs/final_dapp.gif)
 
-### 3.2. Cleanup
+### 3.2. Čišćenje
 
-We can do a little bit of housekeeping in our project. In our `src` directory, we can get rid of the `logo.svg` and `setupTests.js` files.
+Možemo malo i počistiti naš projekt. U našem direktoriju `src` možemo se riješiti datoteka `logo.svg` i `setupTests.js`.
 
-In the `public` directory, we can add our `favicon.ico`, `logo192.png`, `logo512.png`, and `manifest.json` files that fit our project.
+U direktorij `public` možemo dodati naše datoteke `favicon.ico`, `logo192.png`, `logo512.png` i `manifest.json` koje odgovaraju našem projektu.
 
-We should also change the `title` and `description` of our dapp in the `index.html` file in the `public` directory.
+Također bismo trebali promijeniti ‘title’ i ‘description’ našeg dappa u datoteci `index.html` u direktoriju `public`.
 
-### 3.3. Deploy to GitHub Pages
+### 3.3. Postavite na GitHub Pages
 
-In the last section, we will briely look at how to deploy our dapp to GitHub Pages.
+U posljednjem odjeljku ukratko ćemo pogledati kako postaviti naš dapp na GitHub Pages.
 
-1. First add your project to GitHub. If you don't know how to do this, check out this [GitHub guide](https://docs.github.com/en/get-started/importing-your-projects-to-github/importing-source-code-to-github/adding-an-existing-project-to-github-using-the-command-line).
+1. Prvo dodajte svoj projekt na GitHub. Ako ne znate kako to učiniti, pogledajte [GitHub vodič](https://docs.github.com/en/get-started/importing-your-projects-to-github/importing-source-code-to-github/adding-an-existing-project-to-github-using-the-command-line).
 
-2. Install the [gh-pages](https://www.npmjs.com/package/gh-pages) package. This will allow us to deploy our dapp to GitHub Pages.
+2.Instalirajte paket [gh-pages](https://www.npmjs.com/package/gh-pages). To će nam omogućiti da implementiramo našu dapp na GitHub Pages.
 
 ```bash
 npm install gh-pages
 ```
 
-3. In the package.json file, add the following lines:
+3.U datoteci package.json dodajte sljedeće retke:
 
-- At the top of the file, add the following line:
+- Na vrh datoteke dodajte sljedeći redak:
   ```
   "homepage": "https://${GithubUsername}.github.io/${RepositoryName}",
   ```
-  Replace `${GithubUsername}` and `${RepositoryName}` with your GitHub username and the repository name.
-- add the following lines at the bottom of the `scripts` section:
+ Zamijenite `${GithubUsername}` i `${RepositoryName}` svojim GitHub korisničkim imenom i imenom spremišta.
+- dodajte sljedeće linije koda na dno odjeljka ‘scripts’:
   ```
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   ```
 
-4. Push your changes to GitHub.
-5. Run `npm run deploy` to deploy your dapp to a new GitHub Pages branch.
-6. Go to your repository on github.com and follow the instructions: [![](https://raw.githubusercontent.com/dacadeorg/near-development-101/master/content/imgs/gh-pages.png)](https://raw.githubusercontent.com/dacadeorg/near-development-101/master/content/imgs/gh-pages.png).
+4. Prenesite svoje promjene na GitHub.
+5. Pokrenite `npm run deploy` da implementirate svoj dapp na novu granu GitHub Pages.
+6. Idite na svoje spremište na github.com i slijedite upute: [![](https://raw.githubusercontent.com/dacadeorg/near-development-101/master/content/imgs/gh-pages.png)](https://raw.githubusercontent.com/dacadeorg/near-development-101/master/content/imgs/gh-pages.png).
 
-- Click on settings.
-- Navigate to the "Pages" section.
-- Select the gh-pages branch as the default branch for your new page.
-- Click "Save".
+- Kliknite na postavke.
+- Idite na odjeljak ‘Pages’.
+- Odaberite granu gh-pages kao zadanu granu za svoju novu stranicu.
+- Kliknite "Save".
 
-Now you are done and you should be able to see your dapp on `https://${GithubUsername}.github.io/${RepositoryName}`.
+Sada ste gotovi i trebali biste moći vidjeti svoju dapp na `https://${GithubUsername}.github.io/${RepositoryName}`.
 
-Awesome! You have successfully created your first NEAR dapp. Now you can go ahead and create your own dapp in our challenge and receive feedback and earn some NEAR!
+Super! Uspješno ste stvorili svoj prvi NEAR dapp. Sada možete ići korak naprijed i stvoriti svoj vlastiti dapp u našem izazovu, primati povratne informacije i zaraditi NEAR!
