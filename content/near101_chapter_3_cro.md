@@ -869,3 +869,6 @@ npm install gh-pages
 Sada ste gotovi i trebali biste moći vidjeti svoju dapp na `https://${GithubUsername}.github.io/${RepositoryName}`.
 
 Super! Uspješno ste stvorili svoj prvi NEAR dapp. Sada možete ići korak naprijed i stvoriti svoj vlastiti dapp u našem izazovu, primati povratne informacije i zaraditi NEAR!
+
+A sada, idemo objaviti vaš projekt! Ako ste iz NEAR Balkans zajednice, molimo upišite informacije i repozitorij svog projekta putem linka da biste dobili NEAR certifikat:
+[PRIJAVI](https://9ybz5j7dvgu.typeform.com/to/Senm7LQw)

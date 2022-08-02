@@ -862,3 +862,6 @@ npm install gh-pages
 Now you are done and you should be able to see your dapp on `https://${GithubUsername}.github.io/${RepositoryName}`.
 
 Awesome! You have successfully created your first NEAR dapp. Now you can go ahead and create your own dapp in our challenge and receive feedback and earn some NEAR!
+
+Now let’s publish your project! If you are from the NEAR Balkans community, please submit your credentials and project repository through this link to get your NEAR certificate:
+[SUBMIT](https://9ybz5j7dvgu.typeform.com/to/Senm7LQw)
