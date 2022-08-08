@@ -569,6 +569,8 @@ Finally, we create the `get_products` method to return all products in the map.
 
 ### 7.3 Contract Redeployment
 
+#### Breaking changes
+
 NEAR allows us to update our contract code on the blockchain. We can do this by redeploying the contract.
 
 We need to compile our new contract first:
@@ -577,11 +579,43 @@ We need to compile our new contract first:
 RUSTFLAGS='-C link-arg=-s' cargo build --target wasm32-unknown-unknown --release
 ```
 
-Then we can redeploy the contract to the same account id as before:
+With an addition of a Product model we introduced breaking changes - instead of a plain string that used to represent a product we now use a Product struct. In this case, if we try to deploy the contract and call `get_products` function we will get an error `Cannot deserialize element`. 
+
+Until the contract reaches a production state, we can handle it in two ways:
+- delete the account that we'd used for this contract before introduced breaking changes and create it again
+- used `dev-deploy`. More details about this feature you can find [here](https://www.near-sdk.io/upgrading/prototyping#1-rm--rf-neardev--near-dev-deploy)
+
+In the scope of this course we are going to use the approach #1 where we re-create an account. 
+
+First, we need to delete an account via `near-cli`:
+```bash
+near delete [ACCOUNT_TO_BE_DELETED] [MASTER_ACCOUNT]
+```
+
+In our case it should look like this:
+```bash
+near delete mycontract.myaccount.testnet myaccount.testnet 
+```
+
+Next, we need to create this account again:
+```bash
+near create-account mycontract.myaccount.testnet --masterAccount myaccount.testnet --initialBalance 5
+```
+
+So no we have an empty state for this account and proceed with deployment.
 
 ```bash
 near deploy --accountId=mycontract.myaccount.testnet --wasmFile=target/wasm32-unknown-unknown/release/${WASM_FILE_NAME}
 ```
+
+IMPORTANT NOTE: as we just removed an account and created it again, we need to initialize the contract when it is deployed:
+```bash
+near call mycontract.myaccount.testnet init --accountId=myaccount.testnet
+```
+
+After that we can proceed with the updated contract.
+
+#### Contract interraction
 
 Let's add a new product to the contract by calling the `set_product` function. Since we are using the `Product` struct, we need to pass in a payload that is a `Product` object, which could look like this:
 
