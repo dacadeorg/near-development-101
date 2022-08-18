@@ -431,7 +431,7 @@ The `u128` `price` field allows us to store the NEAR price in [yocto](https://ww
 
 Our class also consists of a static method called `fromPayload` which takes a payload and returns a new `Product` object, and a method called `incrementSoldAmount` which we are going to use later to increment the `sold` value after a product has been sold.
 
-The `context` object contains addtional information about the transaction. In this case, we are using `context.sender` to retrive the account id of the account that is calling the function.
+The `context` object contains addtional information about the transaction. In this case, we are using `context.sender` to retrieve the account id of the account that is calling the function.
 
 We also create a new map called `listedProducts` which is a persistent unordered map and will replace the `products` map that we previously stored in our `index.ts` file. We could also migrate the data from the `products` map to the `listedProducts` map, but this is an advanced topic that is out of scope for this learning module.
 
@@ -527,7 +527,7 @@ The code for a token transfer looks like this:
 ContractPromiseBatch.create(${RECEIVING_ACCOUNT}).transfer(${DEPOSIT});
 ```
 
-We previously mentioned that the `context` object contains information about a transaction. For our `buyProduct` function we will use `context.attchedDeposit` to get the amount of tokens that the caller of the function has attached to the transaction.
+We previously mentioned that the `context` object contains information about a transaction. For our `buyProduct` function we will use `context.attachedDeposit` to get the amount of tokens that the caller of the function has attached to the transaction.
 
 Let's write our `buyProduct` function in our `index.ts` file.
 
