@@ -663,6 +663,6 @@ View call: mycontract.myaccount.testnet.getProduct({"id": "0"})
 
 That's it! We have successfully written a contract for a decentralized marketplace.
 
-You can find the code for this project on [GitHub](https://github.com/dacadeorg/near-marketplace-dapp/tree/master/smartcontract).
+You can find the code for this project on [GitHub](https://github.com/dacadeorg/near-marketplace-dapp/tree/master/smartcontract/assemblyscript).
 
 Next, you can look at our learning modules that explain how to build the frontend for the marketplace.
