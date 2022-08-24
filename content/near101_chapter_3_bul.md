@@ -865,4 +865,4 @@ npm install gh-pages
 Страхотно! Успешно създадохте първaта си NEAR апликация. Сега можете да продължите напред и да създадете своя собствена в нашето предизвикателство и да получите обратна връзка и да спечелите NEAR!
 
 Сега, нека публикуваме проекта ти. Ако си част от сървъра на NEAR Balkans, изпрати твоите имена (+псевдоним) и линк към товя проект на този линк за да получите NEAR сертификат:
-[![](https://raw.githubusercontent.com/dacadeorg/near-development-101/master/content/imgs/submit-button-bg.png)](https://9ybz5j7dvgu.typeform.com/to/Senm7LQw).
+[![](https://raw.githubusercontent.com/dacadeorg/near-development-101/master/content/imgs/submit-button-bg.png)](https://9ybz5j7dvgu.typeform.com/to/Senm7LQw)
