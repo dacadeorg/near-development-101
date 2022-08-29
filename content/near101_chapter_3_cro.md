@@ -872,4 +872,4 @@ Super! Uspješno ste stvorili svoj prvi NEAR dapp. Sada možete ići korak napri
 
 A sada, idemo objaviti vaš projekt! Ako ste iz NEAR Balkans zajednice, molimo upišite informacije i repozitorij svog projekta putem linka da biste dobili NEAR certifikat:
 
-[![](https://raw.githubusercontent.com/dacadeorg/near-development-101/master/content/imgs/button-submit-hr.png)](https://9ybz5j7dvgu.typeform.com/to/Senm7LQw)
+[![](https://raw.githubusercontent.com/dacadeorg/near-development-101/master/content/imgs/button-submit-hr.png)](https://forms.gle/KPJ5ynvDdjKtuEHe9)
