@@ -866,4 +866,4 @@ npm install gh-pages
 
 Сега, нека публикуваме проекта ти. Ако си част от сървъра на NEAR Balkans, изпрати твоите имена (+псевдоним) и линк към товя проект на този линк за да получите NEAR сертификат:
 
-[![](https://raw.githubusercontent.com/dacadeorg/near-development-101/master/content/imgs/button-submit-bg.png)](https://9ybz5j7dvgu.typeform.com/to/Senm7LQw)
+[![](https://raw.githubusercontent.com/dacadeorg/near-development-101/master/content/imgs/button-submit-bg.png)](https://forms.gle/KPJ5ynvDdjKtuEHe9)
