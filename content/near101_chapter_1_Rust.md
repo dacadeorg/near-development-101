@@ -195,7 +195,7 @@ To create a new entry to our products mapping we just need to call the `insert` 
 To finish our first smart contract, we need to create a method to retrieve a product from the `products` map.
 
 ```rust
-pub fn get_product(self, id: &String) -> Option<String> {
+pub fn get_product(&self, id: &String) -> Option<String> {
     self.products.get(id)
 }
 ```
@@ -235,7 +235,7 @@ impl Marketplace {
         self.products.insert(&id, &product_name);
     }
 
-    pub fn get_product(self, id: &String) -> Option<String> {
+    pub fn get_product(&self, id: &String) -> Option<String> {
         self.products.get(id)
     }
 
@@ -551,11 +551,11 @@ impl Marketplace {
         self.listed_products.insert(&product.id, &product);
     }
 
-    pub fn get_product(self, id: &String) -> Option<Product> {
+    pub fn get_product(&self, id: &String) -> Option<Product> {
         self.listed_products.get(id)
     }
 
-    pub fn get_products(self) -> Vec<Product> {
+    pub fn get_products(&self) -> Vec<Product> {
         return self.listed_products.values_as_vector().to_vec();
     }
 }
@@ -727,11 +727,11 @@ impl Marketplace {
         self.listed_products.insert(&product.id, &product);
     }
 
-    pub fn get_product(self, id: &String) -> Option<Product> {
+    pub fn get_product(&self, id: &String) -> Option<Product> {
         self.listed_products.get(id)
     }
 
-    pub fn get_products(self) -> Vec<Product> {
+    pub fn get_products(&self) -> Vec<Product> {
         self.listed_products.values_as_vector().to_vec()
     }
 
