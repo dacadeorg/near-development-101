@@ -42,27 +42,45 @@ cd near-marketplace
 Nažalost, "react-scripts" verzije 5 možda neće raditi s najnovijom verzijom node-a, pa bismo trebali koristiti "react-scripts" verzije 4.0.3:
 
 ```bash
-npm install react-scripts@4.0.3
+yarn add react-scripts@4.0.3
 ```
 
 
 Takoder moramo instalirati i `near-api-js` library:
 
 ```bash
-npm install near-api-js
+yarn add near-api-js
 ```
 
 
 Konačno, instalirat ćemo library `uuid` koji se koristi za generiranje jedinstvenih ID-ova za naše proizvode:
 
 ```bash
-npm install uuid
+yarn add uuid
 ```
 
 To je to! Sada možemo pokrenuti projekt i provjeriti radi li sve kako bi trebalo:
 
 ```bash
-npm start
+yarn start
+```
+
+Ako se suočite s bilo kakvim problemom koji kaže `Uncaught (in promise) ReferenceError: Buffer nije definiran` u pregledniku, slijedite korake u nastavku
+
+```
+yarn add -D buffer
+```
+
+**Sada uvezite `Buffer` iz međuspremnika i dodajte taj uvezeni `Buffer` u globalni objekt preglednika.
+
+```js
+import {Buffer} from 'buffer'
+```
+
+Dodajte objekt `Buffer` globalnom opsegu preglednika.
+
+```js
+global.Buffer = Buffer
 ```
 
 ## 2. Povezivanje na NEAR
@@ -131,7 +149,7 @@ Sada kreiramo funkciju za inicijalizaciju našeg ugovora:
 export async function initializeContract() {
   const near = await connect(
     Object.assign(
-      { deps: { keyStore: new keyStores.BrowserLocalStorageKeyStore() } },
+      { keyStore: new keyStores.BrowserLocalStorageKeyStore() },
       nearEnv
     )
   );
@@ -173,7 +191,9 @@ export async function getAccountId() {
 }
 
 export function login() {
-  window.walletConnection.requestSignIn(nearEnv.contractName);
+  return window.walletConnection.requestSignIn({
+    contractId: env.contractName,
+  });
 }
 
 export function logout() {
@@ -296,7 +316,7 @@ Ovdje koristimo utility funkciju `initializeContract` iz datoteke `utils/near.js
 Sada možete pokrenuti aplikaciju:
 
 ```bash
-npm start
+yarn start
 ```
 
 Trebali biste vidjeti nešto poput ovoga:

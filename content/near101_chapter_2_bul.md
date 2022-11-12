@@ -32,24 +32,42 @@ cd near-marketplace
 
 За съжаление, `react-scripts` от версия 5 може да не работят с най-новата node версия, така че трябва да използваме `react-scripts` от версия 4.0.3:
 ```bash
-npm install react-scripts@4.0.3
+yarn add react-scripts@4.0.3
 ```
 
 Също така трябва да инсталираме библиотеката `near-api-js`:
 ```bash
-npm install near-api-js
+yarn add near-api-js
 ```
 
 Накрая ще инсталираме библиотеката `uuid`, която се използва за генериране на уникални идентификатори за нашите продукти:
 
 ```bash
-npm install uuid
+yarn add uuid
 ```
 
 Това е! Сега можем да започнем проекта и да видим дали всичко работи:
 
 ```bash
-npm start
+yarn start
+```
+
+Ако се сблъскате с някакъв проблем, свързан с надпис `Uncaught (in promise) ReferenceError: Buffer is not defined` в браузъра, моля, следвайте стъпките по-долу
+
+```
+yarn add -D buffer
+```
+
+**Сега импортирайте `Buffer` от буфер и добавете този импортиран `Buffer` към глобалния обект на браузъра.
+
+```js
+import {Buffer} from 'buffer'
+```
+
+Добавете обекта `Buffer` към глобалния обхват на браузъра
+
+```js
+global.Buffer = Buffer
 ```
 
 ## 2. Свързване с NEAR
@@ -117,7 +135,7 @@ const nearEnv = environment("testnet");
 export async function initializeContract() {
   const near = await connect(
     Object.assign(
-      { deps: { keyStore: new keyStores.BrowserLocalStorageKeyStore() } },
+      { keyStore: new keyStores.BrowserLocalStorageKeyStore() },
       nearEnv
     )
   );
@@ -159,7 +177,9 @@ export async function getAccountId() {
 }
 
 export function login() {
-  window.walletConnection.requestSignIn(nearEnv.contractName);
+  return window.walletConnection.requestSignIn({
+    contractId: env.contractName,
+  });
 }
 
 export function logout() {
@@ -275,7 +295,7 @@ reportWebVitals();
 Сега можете да стартирате приложението:
 
 ```bash
-npm start
+yarn start
 ```
 
 Трябва да видите нещо подобно:
