@@ -28,12 +28,10 @@ We will also use the package manager yarn, so make sure to have that installed.
 You can install the latest versions of CLI tools globally by running the following commands:
 
 ```bash
-yarn global add near-cli
-yarn global add assemblyscript
-yarn global add asbuild
+yarn global add near-cli assemblyscript asbuild
 ```
 
-We recommend using a code editor that supports code completion and syntax highlighting for TypeScript to help you write AssemblyScript code, like Visual Studio Code or Atom. We will use Visual Studio Code for this learning module.
+We recommend using a code editor that supports code completion and syntax highlighting for TypeScript to help you write AssemblyScript code, like Visual Studio Code or Atom (EOL is reaching). We will use Visual Studio Code for this learning module.
 
 ### 1.2 Project Setup
 

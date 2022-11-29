@@ -26,12 +26,10 @@
 
 Можете да инсталирате най-новите версии на CLI инструменти, като изпълните следните команди:
 ```bash
-yarn global add near-cli
-yarn global add assemblyscript
-yarn global add asbuild
+yarn global add near-cli assemblyscript asbuild
 ```
 
-Препоръчваме да използвате редактор, който поддържа code completion и syntax highlighting за TypeScript, за да ви помогне да пишете код на AssemblyScript, като Visual Studio Code или Atom. За този учебен модул ще използваме Visual Studio Code.
+Препоръчваме да използвате редактор, който поддържа code completion и syntax highlighting за TypeScript, за да ви помогне да пишете код на AssemblyScript, като Visual Studio Code или Atom(EOL). За този учебен модул ще използваме Visual Studio Code.
 
 ### 1.2 Подготовка на проекта
 

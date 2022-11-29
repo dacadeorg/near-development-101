@@ -38,25 +38,45 @@ cd near-marketplace
 Unfourtunately, `react-scripts` of version 5 might not work with the latest node version, so we should use `react-scripts` of version 4.0.3:
 
 ```bash
-npm install react-scripts@4.0.3
+yarn add react-scripts@4.0.3
 ```
 
 We also need to install the `near-api-js` library:
 
 ```bash
-npm install near-api-js
+yarn add near-api-js
 ```
 
 Finally, we will install the `uuid` library, which is used to generate unique IDs for our products:
 
 ```bash
-npm install uuid
+yarn add uuid
 ```
 
 Thats it! Now we can start the project and see if everything is working:
 
 ```bash
-npm start
+yarn start
+```
+
+IMPORTANT NOTE
+
+If you face any issue related saying `Uncaught (in promise) ReferenceError: Buffer is not defined` in the browser please follow the below steps
+
+```
+yarn add -D buffer
+```
+
+**Now import the `Buffer` from buffer and add that imported `Buffer` to the global browser Object.
+
+```js
+import {Buffer} from 'buffer'
+```
+
+Add the `Buffer` object to browser's global scope.
+
+```js
+global.Buffer = Buffer
 ```
 
 ## 2. Connecting to NEAR
@@ -124,7 +144,7 @@ Now we create a function to initialize our contract:
 export async function initializeContract() {
   const near = await connect(
     Object.assign(
-      { deps: { keyStore: new keyStores.BrowserLocalStorageKeyStore() } },
+      { keyStore: new keyStores.BrowserLocalStorageKeyStore() },
       nearEnv
     )
   );
@@ -176,7 +196,9 @@ export async function getAccountId() {
 }
 
 export function login() {
-  window.walletConnection.requestSignIn(nearEnv.contractName);
+  return window.walletConnection.requestSignIn({
+    contractId: env.contractName,
+  });
 }
 
 export function logout() {
@@ -293,7 +315,7 @@ Here we use the `initializeContract` utility function from the `utils/near.js` f
 Now you can start the app:
 
 ```bash
-npm start
+yarn start
 ```
 
 And you should see something like this:
