@@ -168,13 +168,13 @@ pub fn init() -> Self {
 }
 ```
 
-Also, we added `#[init]` attribute which marks the methods a the one that holds custom initialization logic. 
+Also, we added `#[init]` attribute which marks the methods as the one that holds custom initialization logic. 
 
 By default, `Default::default()` will be used to initialize the contract. However, override this behavior `PanicOnDefault` macro should be used instead. 
 
-With all that above, before we can actually invoke functions of the cotracts, the `init` method must be called first (and only once).
+With all that above, before we can actually invoke functions of the contracts, the `init` method must be called first (and only once).
 
-The string `products` in the `UnorderedMap`'s constructor is the unique prefix to use for every key.
+The string `product` in the `UnorderedMap`'s constructor is the unique prefix used for every key.
 
 ### 3.2 Write Function
 
@@ -200,7 +200,7 @@ pub fn get_product(&self, id: &String) -> Option<String> {
 }
 ```
 
-`get_product` method has just one parameter `id`, which is the key of the product we want to retrieve.
+`get_product` method has one parameter `id`, which is the key of the product that we want to retrieve.
 
 The return type of the method is `Option<String>`, since we can return either a product name or `null` (`None` will be translated to `null` where product is not found) if the product doesn't exist.
 
@@ -242,7 +242,7 @@ impl Marketplace {
 }
 ```
 
-**Warning**: The key for the persistent collection should be as short as possible to reduce storage space because this key will be repeated for every record in the collection. Here, we only used the longer `products` key to add more readability for first-time NEAR developers.
+**Warning**: The key for the persistent collection should be as short as possible to reduce storage space because this key will be repeated for every record in the collection. Here, we only used the longer `product` key to add more readability for first-time NEAR developers.
 
 ## 4. Create Accounts
 
@@ -435,6 +435,9 @@ We are going to use a struct called a `Product` to represent our products, becau
 Let's add this strucutre to the `lib.rs` file.
 
 ```rust
+use near_sdk::{AccountId};
+use near_sdk::serde::{Serialize};
+
 #[near_bindgen]
 #[derive(BorshSerialize, BorshDeserialize, Serialize, PanicOnDefault)]
 pub struct Product {
@@ -449,12 +452,14 @@ pub struct Product {
 }
 ```
 
-The `Product` structure consists of the next properties: `id`, `name`, `description`, `image`, `location` and `owner` of the product, which are all strings. We also have a `price` which is a 128 bit unsigned integer that we store as a string for a simpler seriliazation to avoid scientific notation for big numbers in json, and a `sold` property which is a 32 bit unsigned integer.
+The `Product` structure consists of the next properties: `id`, `name`, `description`, `image`, `location` and `owner` of the product, which are all strings. We also have `price` which is a 128 bit unsigned integer that we store as a string for simpler serialization to avoid scientific notation for big numbers in json, and a `sold` property which is a 32 bit unsigned integer.
 
 The `u128` `price` field allows us to store the NEAR price in [yocto](https://www.nanotech-now.com/metric-prefix-table.htm). 1 yocto-NEAR = 10<sup>-24</sup> NEAR, which is the smallest unit of NEAR.
 
 Also, we add an additional struct called `Payload` which will be used as an intermediate object that hold payload data that will be mapped to the `Product` struct.
 ```rust
+use near_sdk::serde::{Serialize, Deserialize};
+
 #[near_bindgen]
 #[derive(Serialize, Deserialize, PanicOnDefault)]
 pub struct Payload {
@@ -470,6 +475,8 @@ pub struct Payload {
 Next, we are going to implement `Product` strucutre and add a factory function `from_payload` that will map `Payload` to `Product`.
 ```rust
 #[near_bindgen]
+use near_sdk::{env};
+
 impl Product {
 
     pub fn from_payload(payload: Payload) -> Self {
@@ -486,7 +493,7 @@ impl Product {
     }
 }
 ```
-It is a simple function that maps data between structs excepts for three properties: `price`, `sold` and `owner`.
+It is a simple function that maps data between structs excepts for two properties: `sold` and `owner`.
 
 We initilize `sold` to 0 as it is just a counter of sold products.
 
@@ -556,7 +563,7 @@ impl Marketplace {
     }
 
     pub fn get_products(&self) -> Vec<Product> {
-        return self.listed_products.values_as_vector().to_vec();
+        self.listed_products.values_as_vector().to_vec()
     }
 }
 ```
@@ -583,7 +590,7 @@ With an addition of a Product model we introduced breaking changes - instead of 
 
 Until the contract reaches a production state, we can handle it in two ways:
 - delete the account that we'd used for this contract before introduced breaking changes and create it again
-- used `dev-deploy`. More details about this feature you can find [here](https://www.near-sdk.io/upgrading/prototyping#1-rm--rf-neardev--near-dev-deploy)
+- used `near dev-deploy`. More details about this feature you can find [here](https://docs.near.org/sdk/rust/building/prototyping)
 
 In the scope of this course we are going to use the approach #1 where we re-create an account. 
 
@@ -629,7 +636,7 @@ After a successful `set_product` call, we can call the `get_product` function to
 near view mycontract.myaccount.testnet get_product '{"id": "1"}'
 ```
 
-You should an output similar to the following:
+You should see an output similar to the following:
 
 ```
 View call: mycontract.myaccount.testnet.get_product({"id": "1"})
@@ -670,16 +677,18 @@ use near_sdk::{env, near_bindgen, AccountId, PanicOnDefault, Promise};
 use near_sdk::serde::{Serialize, Deserialize};
 ```
 
-Now we can write our `buy_product` function at the bottom of the file:
+Now we can write our `buy_product` function:
 
 ```rust
 #[payable]
 pub fn buy_product(&mut self, product_id: &String) {
     match self.listed_products.get(product_id) {
         Some(ref mut product) => {
-            assert_eq! (env::attached_deposit(), product.price, "attached deposit should be equal to the product's");
+            let price = product.price.parse().unwrap();
+
+            assert_eq! (env::attached_deposit(), price, "attached deposit should be equal to the product's");
             let owner = &product.owner.as_str();
-            Promise::new(owner.parse().unwrap()).transfer(product.price);
+            Promise::new(owner.parse().unwrap()).transfer(price);
             product.increment_sold_amount();
             self.listed_products.insert(&product.id, &product);
         },
@@ -694,7 +703,7 @@ First, we retrieve the product with the specified id.
 
 Then we check if the product exists. If it doesn't, we throw an error ("product not found"). Otherwise, we check if the attached deposit is equal to the product's price. If it isn't, we throw an error ("attached deposit should equal to the product's price").
 
-We then create a new `Promise` object and call the `transfer` method on it. This method takes the amount of tokens that the caller of the function has attached to the transaction and transfers them to the owner of the product. We get the account of the owner of the product by accessing the `owner` property of the product we retrieved.
+We then create a new `Promise` object and call the `transfer` method on it. This method takes the amount of tokens that the caller of the function has attached to the transaction and transfers them to the owner of the product. We get the account of the owner of the product by accessing the `owner` property of the product that we retrieved.
 
 Finally, we increment the `sold` field of the product by calling the `increment_sold_amount` function and update the product in the `listed_products` map.
 
