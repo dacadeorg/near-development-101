@@ -219,7 +219,7 @@ For this learning module we will use `myaccount.testnet` as the first account an
 
 ### 4.1 Create a Top-Level Account
 
-Go to the [NEAR Testnet wallet](https://wallet.testnet.near.org/) page and create a new account by following these steps:
+Go to the [MyNearWallet Testnet](https://testnet.mynearwallet.com/) page and create a new account by following these steps:
 
 1. Open the wallet.
 2. Choose a name for your account.
